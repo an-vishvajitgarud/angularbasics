@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  
+  name ="hello this is test message"
   registerForm = new FormGroup({
     fullName: new FormControl('', [Validators.required, Validators.minLength(3)]),
     username: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -24,6 +24,7 @@ export class AppComponent {
   passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
+
     return password === confirmPassword ? null : { passwordsMismatch: true };
   }
 
