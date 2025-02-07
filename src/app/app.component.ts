@@ -24,7 +24,6 @@ export class AppComponent {
   passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
-
     return password === confirmPassword ? null : { passwordsMismatch: true };
   }
 
