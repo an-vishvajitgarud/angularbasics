@@ -2,15 +2,16 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, Validators,ReactiveFormsModule, AbstractControl, ValidationErrors} from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormBuilderComponent } from "./form-builder/form-builder.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,FormsModule,CommonModule,FormsModule,ReactiveFormsModule],
+  imports: [RouterOutlet, CommonModule, FormsModule, ReactiveFormsModule, FormBuilderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  name ="hello this is test message"
+  
   registerForm = new FormGroup({
     fullName: new FormControl('', [Validators.required, Validators.minLength(3)]),
     username: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -45,6 +46,5 @@ export class AppComponent {
   onReset() {
     this.registerForm.reset();
   }
-
-
+  
 }
