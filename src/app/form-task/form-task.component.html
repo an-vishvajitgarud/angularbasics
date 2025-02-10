@@ -31,10 +31,10 @@
       <input formControlName="unitName" type="text" />
 
       <label>Quantity:</label>
-      <input formControlName="quantity" type="number" (input)="updateTotalSum(i)" />
+      <input formControlName="quantity" type="number" (input)="updateTotalSum(i)" min="0" />
 
       <label>Unit Price:</label>
-      <input formControlName="unitPrice" type="number" (input)="updateTotalSum(i)" />
+      <input formControlName="unitPrice" type="number" (input)="updateTotalSum(i)" min="0"/>
 
       <label>Total Sum:</label>
       <input formControlName="totalSum" type="number" readonly />

@@ -84,6 +84,7 @@ export class FormTaskComponent {
       }
     });
     this.units.clear();
+    
     if (values.units && values.units.length > 0) {
       values.units.forEach((unit: { unitName: string; quantity: number; unitPrice: number; totalSum: number; }) => {
         const unitGroup = this.createUnit();
