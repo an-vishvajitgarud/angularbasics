@@ -1,0 +1,83 @@
+<form [formGroup]="userform" (ngSubmit)="onSubmit()" class="form-container">
+  <div class="form-group">
+    <label>Company Name:</label>
+    <input type="text" formControlName="companyName" placeholder="Enter Company Name" />
+    <small *ngIf="userform.get('companyName')?.invalid && userform.get('companyName')?.touched">
+      Company name is required (Min 3 characters)
+    </small>
+  </div>
+
+  <div formGroupName="address" class="form-group">
+    <label>Country:</label>
+    <input type="text" formControlName="country" placeholder="Enter Country" />
+    <small *ngIf="userform.get('address.country')?.invalid && userform.get('address.country')?.touched">
+      Country is required (Min 3 characters)
+    </small>
+
+    <label>Street:</label>
+    <input type="text" formControlName="street" placeholder="Enter Street" />
+
+    <label>City:</label>
+    <input type="text" formControlName="city" placeholder="Enter City" />
+
+    <label>Zip:</label>
+    <input type="number" formControlName="zip" placeholder="Enter Zip Code" />
+  </div>
+
+  <div formArrayName="units" class="units-container">
+    <h2>Units</h2>
+    <div *ngFor="let unit of units.controls; let i = index" [formGroupName]="i" class="unit-group">
+      <label>Unit Name:</label>
+      <input formControlName="unitName" type="text" />
+
+      <label>Quantity:</label>
+      <input formControlName="quantity" type="number" (input)="updateTotalSum(i)" />
+
+      <label>Unit Price:</label>
+      <input formControlName="unitPrice" type="number" (input)="updateTotalSum(i)" />
+
+      <label>Total Sum:</label>
+      <input formControlName="totalSum" type="number" readonly />
+
+      <button type="button" (click)="deleteUnit(i)">Remove</button>
+    </div>
+    <button class="add-unit-button" type="button" (click)="addUnits()">+ Add new unit</button>
+  </div>
+
+  <div class="submitbutton">
+    <button class="submit-button" type="submit">Submit</button>
+  </div>
+</form>
+
+<table *ngIf="storedData.length > 0">
+  <thead>
+    <tr>
+      <th>Company Name</th>
+      <th>Country</th>
+      <th>Street</th>
+      <th>City</th>
+      <th>Zip</th>
+      <th>Units</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of storedData; let i = index" (click)="patchValue(i)">
+      <td>{{ data.companyName }}</td>
+      <td>{{ data.address.country }}</td>
+      <td>{{ data.address.street }}</td>
+      <td>{{ data.address.city }}</td>
+      <td>{{ data.address.zip }}</td>
+      <td>
+        <ul>
+          <li *ngFor="let unit of data.units">
+            {{unit.unitName}} {{ unit.totalSum }}
+          </li>
+        </ul>
+      </td>
+      <td>
+        <button (click)="deleteRecord(i)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

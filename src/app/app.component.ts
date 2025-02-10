@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, Validators,ReactiveFormsModule, AbstractControl, ValidationErrors} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormBuilderComponent } from "./form-builder/form-builder.component";
+import { FormTaskComponent } from "./form-task/form-task.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, FormsModule, ReactiveFormsModule, FormBuilderComponent],
+  imports: [RouterOutlet, CommonModule, FormsModule, ReactiveFormsModule, FormBuilderComponent, FormTaskComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -46,5 +47,5 @@ export class AppComponent {
   onReset() {
     this.registerForm.reset();
   }
-  
+
 }
