@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, Validators,ReactiveFormsModule, AbstractControl, ValidationErrors} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormBuilderComponent } from "./form-builder/form-builder.component";
-import { FormTaskComponent } from "./form-task/form-task.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, FormsModule, ReactiveFormsModule, FormBuilderComponent, FormTaskComponent],
+  imports: [RouterOutlet, CommonModule, FormsModule, ReactiveFormsModule,RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

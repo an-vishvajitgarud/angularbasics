@@ -106,15 +106,6 @@ small {
   align-items: center;
 }
 .submit-button {
-  /* background: darkblue;
-  width: 100%;
-  padding: 10px;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 4px;
-  margin-top: 10px; */
   background: rgb(34, 12, 231);
   color: white;
   border: none;
@@ -125,8 +116,7 @@ small {
   height:40px;
 }
 
-
-table {
+/* table {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
@@ -155,7 +145,11 @@ td ul {
 td ul li {
   list-style-type: none;
 }
-
+td div {
+  display: flex;
+  justify-content:space-evenly;
+  align-items: center;
+}
 td button {
   background: red;
   color: white;
@@ -165,11 +159,12 @@ td button {
   border-radius: 4px;
   width: 100px;
   height:40px;
+  margin: 5px;
 }
 
 td button:hover {
   background: darkred;
-}
+} */
 
 
 

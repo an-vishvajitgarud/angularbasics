@@ -1,0 +1,39 @@
+<h1>display works!</h1>
+
+<table *ngIf="storedData.length > 0">
+    <thead>
+      <tr>
+        <th>Company Name</th>
+        <th>Country</th>
+        <th>Street</th>
+        <th>City</th>
+        <th>Zip</th>
+        <th>Units</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of storedData; let i = index" >
+        <td>{{ data.companyName }}</td>
+        <td>{{ data.address.country }}</td>
+        <td>{{ data.address.street }}</td>
+        <td>{{ data.address.city }}</td>
+        <td>{{ data.address.zip }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let unit of data.units">
+              {{unit.unitName}} {{ unit.totalSum }}
+            </li>
+          </ul>
+        </td>
+        <td>
+          <div>
+          <button style="background-color: green;" (click)="editRecord(i)">Edit</button>
+          <button (click)="deleteRecord(i)">Delete</button>
+          
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
