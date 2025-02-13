@@ -106,7 +106,7 @@ small {
   align-items: center;
 }
 .submit-button {
-  background: rgb(34, 12, 231);
+  background: rgb(59, 59, 240);
   color: white;
   border: none;
   padding: 5px 10px;
@@ -115,6 +115,9 @@ small {
   width: 150px;
   height:40px;
 }
+.submit-button:hover {
+  background: rgb(31, 18, 151);
+  }
 
 /* table {
   width: 100%;

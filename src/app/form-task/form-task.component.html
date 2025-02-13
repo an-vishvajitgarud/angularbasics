@@ -2,18 +2,21 @@
   <div class="form-group">
     <label>Company Name:</label>
     <input type="text" formControlName="companyName" placeholder="Enter Company Name" />
-    <small *ngIf="userform.get('companyName')?.invalid && userform.get('companyName')?.touched">
+    @if(userform.get('companyName')?.invalid && userform.get('companyName')?.touched){
+    <small>
       Company name is required (Min 3 characters)
     </small>
+  }
   </div>
 
   <div formGroupName="address" class="form-group">
     <label>Country:</label>
     <input type="text" formControlName="country" placeholder="Enter Country" />
-    <small *ngIf="userform.get('address.country')?.invalid && userform.get('address.country')?.touched">
+    @if(userform.get('address.country')?.invalid && userform.get('address.country')?.touched){
+    <small>
       Country is required (Min 3 characters)
     </small>
-
+  }
     <label>Street:</label>
     <input type="text" formControlName="street" placeholder="Enter Street" />
 
@@ -26,7 +29,8 @@
 
   <div formArrayName="units" class="units-container">
     <h2>Units</h2>
-    <div *ngFor="let unit of units.controls; let i = index" [formGroupName]="i" class="unit-group">
+    @for(unit of units.controls; track unit ; let i = $index){
+    <div [formGroupName]="i" class="unit-group">
       <label>Unit Name:</label>
       <input formControlName="unitName" type="text" />
 
@@ -41,6 +45,7 @@
 
       <button type="button" (click)="deleteUnit(i)">Remove</button>
     </div>
+    }
     <button class="add-unit-button" type="button" (click)="addUnits()">+ Add new unit</button>
   </div>
 
@@ -50,38 +55,3 @@
   </div>
 </form>
 
-<!-- <table *ngIf="storedData.length > 0">
-  <thead>
-    <tr>
-      <th>Company Name</th>
-      <th>Country</th>
-      <th>Street</th>
-      <th>City</th>
-      <th>Zip</th>
-      <th>Units</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of storedData; let i = index" >
-      <td>{{ data.companyName }}</td>
-      <td>{{ data.address.country }}</td>
-      <td>{{ data.address.street }}</td>
-      <td>{{ data.address.city }}</td>
-      <td>{{ data.address.zip }}</td>
-      <td>
-        <ul>
-          <li *ngFor="let unit of data.units">
-            {{unit.unitName}} {{ unit.totalSum }}
-          </li>
-        </ul>
-      </td>
-      <td>
-        <div>
-        <button (click)="deleteRecord(i)">Delete</button>
-        <button (click)="editRecord(i)">Edit</button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table> -->

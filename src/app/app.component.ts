@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, Validators,ReactiveFormsModule, AbstractControl, ValidationErrors} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, FormsModule, ReactiveFormsModule,RouterOutlet, RouterLink],
+  imports: [RouterOutlet, CommonModule, FormsModule, ReactiveFormsModule,RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   
+   constructor(private router: Router) {}
+
   registerForm = new FormGroup({
     fullName: new FormControl('', [Validators.required, Validators.minLength(3)]),
     username: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -44,6 +46,14 @@ export class AppComponent {
 
   onReset() {
     this.registerForm.reset();
+  }
+
+  form(){
+    this.router.navigateByUrl('/form-task');
+  }
+
+  display(){
+    this.router.navigateByUrl('/display')
   }
 
 }

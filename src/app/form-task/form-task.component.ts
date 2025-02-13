@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
+import { ServiceService } from '../service.service';
+
 @Component({
   selector: 'app-form-task',
   standalone: true,
@@ -13,23 +15,27 @@ export class FormTaskComponent {
 
   private fb = inject(FormBuilder);
   storedData: any[] = [];
-
-  // property to track edit state
   isEditing: boolean = false;
   editingIndex: number | null = null;
+  companyId: number | null = null; // Track editing ID
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private companyService: ServiceService,
+    private router: Router
+  ) {}
 
-  ngOnInit(){
-    this.loadStoredData();
+  ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const indexParam = params.get('index');
       if (indexParam !== null) {
-        const index = +indexParam; // convert string to number
+        const index = +indexParam;
+        this.companyId = index;
         this.editRecord(index);
       }
     });
   }
+
   userform = this.fb.group({
     companyName: ['', [Validators.required, Validators.minLength(3)]],
     address: this.fb.group({
@@ -38,16 +44,8 @@ export class FormTaskComponent {
       city: ['', [Validators.required, Validators.minLength(3)]],
       zip: ['', [Validators.required, Validators.minLength(3)]]
     }),
-    units: this.fb.array([this.createUnit()]),
+    units: this.fb.array([this.createUnit()])
   });
-
-    // Add method to load data from localStorage
-    loadStoredData() {
-      const savedData = localStorage.getItem('storedData');
-      if (savedData) {
-        this.storedData = JSON.parse(savedData);
-      }
-    }
 
   get units() {
     return this.userform.get('units') as FormArray;
@@ -62,16 +60,14 @@ export class FormTaskComponent {
     });
   }
 
-  //add units
   addUnits() {
     this.units.push(this.createUnit());
   }
-  //delete units
+
   deleteUnit(index: number) {
     this.units.removeAt(index);
   }
-    
-  // total sum
+
   updateTotalSum(index: number) {
     const unit = this.units.at(index);
     const quantity = unit.get('quantity')?.value || 0;
@@ -80,51 +76,87 @@ export class FormTaskComponent {
     unit.get('totalSum')?.setValue(totalSum);
   }
 
-  //submit data 
   onSubmit() {
     if (this.userform.valid && !this.isEditing) {
-      alert("data saved");
-      this.storedData.push(this.userform.value);
-      //store data in local storage
-      localStorage.setItem('storedData', JSON.stringify(this.storedData));
-      this.userform.reset();
-      this.units.clear();
-      this.addUnits()
+      this.companyService.postData(this.userform.value).subscribe(response => {
+        alert("Data saved successfully!");
+        this.userform.reset();
+        this.units.clear();
+        this.addUnits();
+        this.router.navigate(['/display']);
+      });
     }
   }
-
-  //delete data
-  deleteRecord(index: number) {
-    this.storedData.splice(index, 1);
-    localStorage.setItem('storedData', JSON.stringify(this.storedData));
-  }
-
-  editRecord(index: number) {
+  
+  editRecord(id: number) {
+    console.log("id is ------", id);
     this.isEditing = true;
-    this.editingIndex = index;
-    // patch value to main content
-    this.userform.patchValue(this.storedData[index]);
-    //also patch value for the units
-    this.units.clear();
-    this.storedData[index].units.forEach((unit: any) => {
-      this.units.push(this.createUnit());
-      this.units.at(this.units.length - 1).patchValue(unit);
-    });
-  }
 
-  // method for updating
+    this.companyService.getData().subscribe({
+        next: (response: any) => {
+            console.log("data for edit", response);
+
+            // Check if the response is an array
+            if (Array.isArray(response)) {
+                // Find the company by ID
+                const company = response.find((item: any) => item.id === String(id));
+                console.log("company data check", company);
+
+                // If the company is found, patch the form
+                if (company) {
+                    this.patchCompanyData(company);
+                } else {
+                    console.log(`Company with id ${id} not found.`);
+                }
+            } else {
+                console.log("Unexpected response format", response);
+            }
+        },
+        error: (err) => {
+            console.error("Error fetching data", err);
+        }
+    });
+}
+
+// Helper method to patch company data into the form
+private patchCompanyData(company: any) {
+    this.userform.patchValue({
+      companyName: company.company_name,
+        address:{country: company.country,
+        street: company.street,
+        city: company.city,
+        zip: company.zip}
+    });
+
+    // Clear existing units and add new ones
+    this.units.clear();
+    company.units.forEach((unit: any) => {
+        const unitFormGroup = this.createUnit();
+        // unitFormGroup.patchValue(unit);
+        unitFormGroup.patchValue({
+          unitName: unit.unit_name,
+          quantity: unit.quantity,
+          unitPrice: unit.unit_price,
+          totalSum: unit.total_sum,
+        })
+        this.units.push(unitFormGroup);
+    });
+}
+
+
   updateRecord() {
-    if (this.userform.valid && this.editingIndex !== null) {
-      // Update the record at the editing index
-      this.storedData[this.editingIndex] = this.userform.value;
-      // Update localStorage
-      localStorage.setItem('storedData', JSON.stringify(this.storedData));
-      // Reset form and editing state
-      this.userform.reset();
-      this.units.clear();
-      this.addUnits();
-      this.isEditing = false;
-      this.editingIndex = null;
+    if (this.userform.valid && this.companyId !== null) {
+      console.log("checkId***",this.companyId)
+      const updatedData = { id: this.companyId, ...this.userform.value };
+      this.companyService.putData(updatedData).subscribe(response => {
+        alert("Data updated successfully!");
+        this.userform.reset();
+        this.units.clear();
+        this.addUnits();
+        this.isEditing = false;
+        this.companyId = null;
+        this.router.navigate(['/display']);
+      });
     }
   }
 

@@ -1,4 +1,4 @@
-.container {
+/* .container {
   width: 500px;
   margin: 40px auto;
   padding: 20px;
@@ -71,13 +71,13 @@ button {
 button:first-child {
   background: #007bff;
   margin-right: 5px;
-}
+} */
 
 /* button:first-child:hover {
   background: #0056b3;
 } */
 
-button.reset {
+/* button.reset {
   background: #dc3545;
 }
 
@@ -88,4 +88,31 @@ button.reset:hover {
 button:disabled {
   background: #ccc;
   cursor: not-allowed;
+} */
+
+button{
+  background: rgb(56, 216, 56)
+   
+  ;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 100px;
+  height:40px;
+  margin: 5px;
 }
+button:hover{
+  background:rgb(10, 138, 53);
+  }
+
+.nav-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(130, 134, 134);
+  padding: 10px;
+  border-radius: 4px;
+}
+

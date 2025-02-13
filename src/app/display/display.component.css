@@ -32,8 +32,7 @@ table {
     justify-content:space-evenly;
     align-items: center;
   }
-  td button {
-    background: red;
+  td button.delete, td button.update  {
     color: white;
     border: none;
     padding: 5px 10px;
@@ -43,8 +42,23 @@ table {
     height:40px;
     margin: 5px;
   }
+
+  td button.delete {
+    background: red;
+
+  }
+
+  td button.update {
+    background: green;
+
+  }
   
-  td button:hover {
+  td button.delete:hover {
     background: darkred;
+  }
+
+  td button.update:hover {
+    background: darkgreen;
+
   }
   

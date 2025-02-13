@@ -1,6 +1,5 @@
-<h1>display works!</h1>
-
-<table *ngIf="storedData.length > 0">
+<h1> Company Data</h1>
+<table>
     <thead>
       <tr>
         <th>Company Name</th>
@@ -13,27 +12,31 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of storedData; let i = index" >
-        <td>{{ data.companyName }}</td>
-        <td>{{ data.address.country }}</td>
-        <td>{{ data.address.street }}</td>
-        <td>{{ data.address.city }}</td>
-        <td>{{ data.address.zip }}</td>
+      @for( data of storedData; track data; let i= $index ){
+      <tr  >
+        <td>{{ data.company_name }}</td>
+        <td>{{ data.country }}</td>
+        <td>{{ data.street }}</td>
+        <td>{{ data.city }}</td>
+        <td>{{ data.zip }}</td>
         <td>
           <ul>
-            <li *ngFor="let unit of data.units">
-              {{unit.unitName}} {{ unit.totalSum }}
+            @for(unit of data.units;track unit){
+            <li>
+            {{ unit.unit_name}}, Total_Price = {{ unit.total_sum}}
             </li>
+          }
           </ul>
         </td>
         <td>
           <div>
-          <button style="background-color: green;" (click)="editRecord(i)">Edit</button>
-          <button (click)="deleteRecord(i)">Delete</button>
-          
+          <button class="update" (click)="editRecord(data.id)">Edit</button>
+          <button class="delete" (click)="deleteRecord(data.id)">Delete</button> 
           </div>
         </td>
       </tr>
+    }
     </tbody>
   </table>
+
   

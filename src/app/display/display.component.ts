@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ServiceService } from '../service.service';
 
 @Component({
   selector: 'app-display',
@@ -11,28 +12,34 @@ import { Router } from '@angular/router';
 })
 export class DisplayComponent {
   storedData?:any;
+
   ngOnInit(){
     this.loadStoredData();
   }
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private companyService: ServiceService) {}
 
   loadStoredData() {
-    const savedData = localStorage.getItem('storedData');
-    if (savedData) {
-      this.storedData = JSON.parse(savedData);
-      console.log(this.storedData)
-    }
+    this.companyService.getData().subscribe(response => {
+      this.storedData = response;
+      console.log("received Data =>>>", this.storedData);
+    });
   }
 
   //delete data
-  deleteRecord(index: number) {
-    this.storedData.splice(index, 1);
-    localStorage.setItem('storedData', JSON.stringify(this.storedData));
+  deleteRecord(id: number) {
+    // console.log("id",id)
+    this.companyService.deleteData(id).subscribe(response => {
+      // alert("Record deleted successfully!");
+      console.log("deleted response",response)
+      this.loadStoredData();
+    });
   }
+
+
   //edit data
-  editRecord(index:number){
-    this.router.navigate(['/form-task', index]);
+  editRecord(id: number) {
+    this.router.navigate(['/form-task', id]);
   }
 
 }

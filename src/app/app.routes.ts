@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { FormTaskComponent } from './form-task/form-task.component';
 import { DisplayComponent } from './display/display.component';
+import { HttpClientComponent } from './http-client/http-client.component';
 
 export const routes: Routes = [
     {
@@ -22,5 +23,9 @@ export const routes: Routes = [
     {
         path: 'display',
         component: DisplayComponent,
-    }
+    },
+    {
+        path: 'http_client',
+        component: HttpClientComponent
+    },
 ];

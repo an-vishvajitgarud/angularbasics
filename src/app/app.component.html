@@ -64,10 +64,9 @@
 
 <app-form-task></app-form-task> -->
 
-<nav>
-  <a routerLink="/">Home</a> |
-  <a routerLink="/display">Display</a>
-</nav>
-
+<div class="nav-button">
+  <button (click)="form()">form</button>
+  <button (click)="display()">display</button>
+</div>
 
 <router-outlet></router-outlet>
